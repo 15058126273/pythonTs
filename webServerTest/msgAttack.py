@@ -10,6 +10,8 @@ SERVER_NAME = "www.langsspt.com"
 # 访问的页面
 URL = '/index.php/Index/msgSend'
 
+SEND_NUM = 0
+
 
 class MessageThread(threading.Thread):
     def __init__(self, thread_name):
@@ -28,6 +30,7 @@ def begin_connect():
 
 
 def test_start(phone):
+    global SEND_NUM
     test_data = {'phone': phone}
     test_data_encode = urllib.parse.urlencode(test_data)
     headers = {
@@ -39,8 +42,9 @@ def test_start(phone):
     res = conn.getresponse()
     if res.status == 200:
         res_body = res.read()
-        if '1' in str(res_body):
-            print(test_data_encode, '短信发送成功')
+        if "b'1'" == str(res_body):
+            SEND_NUM += 1
+            print(test_data_encode, '短信发送成功', SEND_NUM)
         else:
             print(test_data_encode, '短信发送失败')
     else:
