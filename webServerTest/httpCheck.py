@@ -9,13 +9,14 @@ import http.client as http
 
 
 # 测试的服务器 + 端口 （有些大网站会认定你是攻击并且重置你的请求，比如baidu.com）
-SERVER_NAME = "192.168.1.72:8080"
+SERVER_NAME = "www.langsspt.com"
 # 访问的页面
-URL = '/'
+# URL = '/404.html'
+URL = '/index.php/Index/msgSend'
 # 同时运行的线程数 （每个电脑能开的线程数不同（我：893个线程），如果超过了系统的最大负荷，则只创建能创建的最大线程数）
-THREADS_COUNT = 200
+THREADS_COUNT = 800
 # 每个线程执行多少次connect
-RUN_COUNT = 250
+RUN_COUNT = 1000
 
 # 开始的时间
 START_TIME = 0
@@ -89,4 +90,4 @@ except:
     print('无法创建新的线程了，目前已有线程：', CREATED_THREAD, '个')
 finally:
     THREADS_COUNT = CREATED_THREAD
-    print('正在努力运行中...')
+    print(time.strftime('%Y-%m-%d %H:%M:%S'), ':', '正在试探', SERVER_NAME, '啦啦啦....')
