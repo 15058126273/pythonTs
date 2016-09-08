@@ -1,7 +1,9 @@
 #
 # Python Version: 3.5
-# 运行该项目需保证测试的服务器能连接
 #
+# 服务器压力测试（禁止使用该脚本进行非法行为）
+#
+# Author yjy
 #
 import threading
 import time
@@ -11,7 +13,6 @@ import http.client as http
 # 测试的服务器 + 端口 （有些大网站会认定你是攻击并且重置你的请求，比如baidu.com）
 SERVER_NAME = "www.yjytomcat.com:8080"
 # 访问的页面
-# URL = '/404.html'
 URL = '/'
 # 同时运行的线程数 （每个电脑能开的线程数不同（我：893个线程），如果超过了系统的最大负荷，则只创建能创建的最大线程数）
 THREADS_COUNT = 400
@@ -75,7 +76,8 @@ def get_result():
     print("成功的请求数(个)：", str(s_count))
     print("失败的请求数(个)：", str(f_count))
     print("平均每秒请求(个)：", str(round(s_count / time_span, 2)))
-    print("平均每个请求耗时(秒)：", str(round(time_span / s_count, 5)))
+    if s_count:
+        print("平均每个请求耗时(秒)：", str(round(time_span / s_count, 5)))
 
 
 try:
@@ -90,4 +92,4 @@ except:
     print('无法创建新的线程了，目前已有线程：', CREATED_THREAD, '个')
 finally:
     THREADS_COUNT = CREATED_THREAD
-    print(time.strftime('%Y-%m-%d %H:%M:%S'), ':', '正在试探', SERVER_NAME, '啦啦啦....')
+    print(time.strftime('%Y-%m-%d %H:%M:%S'), ':', '正在测试', SERVER_NAME+URL, '....')
