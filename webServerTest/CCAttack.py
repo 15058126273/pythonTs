@@ -1,13 +1,11 @@
 #
 # Python Version: 3.5
 #
-#
 import threading
 import time
 import http.client as http
 
-
-# 服务器 + 端口 （有些大网站会认定你是攻击并且重置你的请求，比如baidu.com）
+# 服务器 + 端口
 SERVER_NAME = "www.langsspt.com"
 # 访问的页面
 URL = '/'
@@ -16,7 +14,6 @@ THREADS_COUNT = 1000
 
 # 已创建的线程数
 CREATED_THREAD = 0
-
 # 死亡的线程数
 DEAD_THREAD = 0
 
@@ -41,6 +38,7 @@ class RequestThread(threading.Thread):
     def test_performance(self):
         try:
             conn = http.HTTPConnection(SERVER_NAME)
+            # conn.request("GET", URL+'?'+str(time.time()))
             conn.request("GET", URL)
             conn.close()
         except:
