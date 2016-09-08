@@ -9,14 +9,14 @@ import http.client as http
 
 
 # 测试的服务器 + 端口 （有些大网站会认定你是攻击并且重置你的请求，比如baidu.com）
-SERVER_NAME = "www.langsspt.com"
+SERVER_NAME = "www.yjytomcat.com:8080"
 # 访问的页面
 # URL = '/404.html'
-URL = '/index.php/Index/msgSend'
+URL = '/'
 # 同时运行的线程数 （每个电脑能开的线程数不同（我：893个线程），如果超过了系统的最大负荷，则只创建能创建的最大线程数）
-THREADS_COUNT = 800
+THREADS_COUNT = 400
 # 每个线程执行多少次connect
-RUN_COUNT = 1000
+RUN_COUNT = 100
 
 # 开始的时间
 START_TIME = 0
