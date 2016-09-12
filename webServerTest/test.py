@@ -16,16 +16,17 @@ URL = '/index.php/Index/msgSend'
 
 
 def test_start():
-    test_data = {'phone': 15058126273, 'imgcode': 3995}
+    test_data = {'phone': 13968042920, 'imgcode': 1456}
     test_data_encode = urllib.parse.urlencode(test_data)
     headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (\
-                        KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36\
+                        (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36',
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
         'Cookie': 'ktime_20160611/www.langsspt.com=-2;\
-                    PHPSESSID=9bakfmel39fl6g0uv307bnpui2;\
-                    CNZZDATA1259850767=1547586482-1470885066-%7C1473552259',
+                    PHPSESSID=ct4r7jt2fs9u74f1tbtlg8hcd6;\
+                    CNZZDATA1259850767=1547586482-1470885066-%7C1473654407',
         'X-Requested-With': 'XMLHttpRequest'
+
     }
     conn = http.HTTPConnection(SERVER_NAME)
     conn.request("POST", URL, test_data_encode, headers)
