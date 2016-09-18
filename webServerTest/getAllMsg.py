@@ -27,7 +27,7 @@ headers = {
 
 
 def test_start(i):
-    global headers,newErrorId
+    global headers
     try:
         test_data = {'id': i}
         test_data_encode = urllib.parse.urlencode(test_data)
@@ -46,13 +46,17 @@ def test_start(i):
             print('status:', result.status)
         conn.close()
     except Exception as e:
-        newErrorId += '\n'+str(i)
+        newErrorId = str(i)+'\n'
+        errorId = open('errorId.txt', 'r+')
+        oldError = errorId.read()
+        oldError += newErrorId
+        errorId.write(oldError)
+        errorId.close()
         print('获取第',i,'封站内信失败',e)
 
 i = 9851;
 nowI = i;
 res = open('result'+str(i)+'_'+str(math.floor(time.time()))+'.txt', 'w')
-newErrorId = ''
 while True:
     if i - nowI >= 10000:
         res.close()
@@ -63,8 +67,3 @@ while True:
     i += 1
 
 res.close()
-errorId = open('errorId.txt', 'r+')
-oldError = errorId.read()
-oldError += newErrorId
-errorId.write(oldError)
-errorId.close()
