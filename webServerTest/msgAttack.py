@@ -1,3 +1,5 @@
+#  encoding=utf-8
+
 import http.client as http
 import urllib
 import random
