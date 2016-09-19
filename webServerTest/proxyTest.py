@@ -1,67 +1,121 @@
 #! /usr/bin/env python3
 # -*- coding:utf-8 -*-
 
-'python进行代理的curl数据提交'
+import os
+import sys
+import urllib.request
+import urllib.parse
+import socket
 
-__author__ = 'ken'
-
-import os;
-import sys;
-
-curPath = os.path.abspath(os.path.dirname(__file__));
-sys.path.append(curPath);
-
-import urllib.request;
-import urllib.parse;
-import socket;
+curPath = os.path.abspath(os.path.dirname(__file__))
+sys.path.append(curPath)
 
 
 class curl:
     def __init__(self):
-        pass;
+        self.user_agent = 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 \
+                            (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36'
+        self.proxyIpList = ['58.56.21.199:80']
+        self.readyIp = ['1.9.171.51:800',
+                        '1.82.216.134:80',
+                        '1.82.216.135:80',
+                        '58.56.21.196:80',
+                        '58.56.21.199:80',
+                        '58.56.21.200:80',
+                        '58.56.21.201:80',
+                        '58.214.253.190:8080',
+                        '58.214.254.46:8080',
+                        '58.246.242.154:8080',
+                        '60.21.209.114:8080',
+                        '60.191.159.86:3128',
+                        '61.55.135.192:82',
+                        '101.200.169.110:80',
+                        '101.201.150.111:3128',
+                        '106.75.128.89:80',
+                        '106.75.128.90:80',
+                        '110.18.243.50:8080',
+                        '111.11.122.7:80',
+                        '111.12.251.166:80'
+                        '111.12.251.167:80',
+                        '111.12.251.169:80',
+                        '111.12.251.172:80',
+                        '111.12.251.173:80',
+                        '111.12.251.174:80',
+                        '111.12.251.207:80',
+                        '111.12.251.213:80',
+                        '111.13.136.46:80',
+                        '112.65.88.173:8080',
+                        '112.112.70.115:80',
+                        '113.106.213.162:9797',
+                        '115.28.101.22:3128',
+                        '117.135.250.133:80',
+                        '117.135.250.134:80',
+                        '119.6.136.122:80',
+                        '119.88.128.73:80',
+                        '119.88.128.77:80',
+                        '119.88.128.78:80',
+                        '119.88.128.79:80',
+                        '120.0.112.198:81',
+                        '120.25.90.25:81',
+                        '120.192.92.98:80',
+                        '121.193.143.249:80',
+                        '122.96.59.104:82',
+                        '122.96.59.104:81',
+                        '122.226.128.251:3128',
+                        '123.56.74.13:8080',
+                        '123.125.122.205:80',
+                        '123.125.122.224:80',
+                        '123.139.59.85:9999',
+                        '124.88.67.7:83',
+                        '124.88.67.17:843',
+                        '124.88.67.20:80',
+                        '124.88.67.23:843',
+                        '124.88.67.24:843',
+                        '124.88.67.31:843',
+                        '124.88.67.32:80',
+                        '124.160.225.37:3128',
+                        '182.48.113.11:8088',
+                        '182.254.218.141:80'
+                        '183.233.179.172:8080',
+                        '183.245.146.62:80',
+                        '183.245.146.237:80',
+                        '202.106.16.36:3128',
+                        '211.110.127.210:3128',
+                        '211.143.146.231:80',
+                        '211.162.79.68:3128',
+                        '218.4.114.70:8080',
+                        '218.26.120.170:8080',
+                        '220.191.187.90:3128',
+                        '220.248.224.244:8089',
+                        '221.4.169.82:8080',
+                        '221.130.13.238:80',
+                        '223.68.1.38:8000'
 
-    # 获取用户浏览器信息
-    def getUserAgent(self):
-        userAgent = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0';
-        return userAgent
+                        ]
 
     # 进行数据提交
     def run(self, url):
-        self.url = url
-        self.userAgent = self.getUserAgent()
-        self.proxyIpList = ['124.240.187.78:81'];
-
         # data = urllib.parse.urlencode(self.param).encode(encoding='UTF8');
-        req = urllib.request.Request(self.url)
-        req.add_header('User-Agent', self.userAgent)
-
+        req = urllib.request.Request(url)
+        req.add_header('User-Agent', self.user_agent)
         for proxyIp in self.proxyIpList:
-            socket.setdefaulttimeout(30)  # 3秒未响应则为超时，跳过执行下一条
+            socket.setdefaulttimeout(10)  # 3秒未响应则为超时，跳过执行下一条
             try:
                 # 添加代理
                 proxy_handler = urllib.request.ProxyHandler({'http': proxyIp})
                 proxy_auth_handler = urllib.request.ProxyBasicAuthHandler()
                 opener = urllib.request.build_opener(proxy_handler, proxy_auth_handler)
-
                 # 添加头信息
                 opener.addheaders = [
-                    ('User-Agent', self.userAgent)
+                    ('User-Agent', self.user_agent)
                 ]
-
                 # 数据请求
-                response = opener.open(self.url)
+                response = opener.open(url)
                 # 获取请求返还数据
                 response_data = response.read()
                 print(proxyIp, "正确：" + str(response_data))
-                # return response_data;
-            except urllib.error.HTTPError as e:
-                print(proxyIp, "错误：", e)
-                # print("错误内容：", e.read().decode("utf8"));
-            except urllib.error.URLError as e:
-                print(proxyIp, '错误：未能获取服务器信息.',e)
-                # print('错误原因: ', e.reason);
             except Exception as e:
-                print(proxyIp, "错误：其他未知错误！",e)
+                print(proxyIp, "错误：", e)
 
 cu = curl()
-cu.run("http://www.yangqq.com/")
+cu.run("http://www.55cat.com/")

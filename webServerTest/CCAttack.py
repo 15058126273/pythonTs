@@ -6,7 +6,7 @@ import time
 import http.client as http
 
 # 服务器 + 端口
-SERVER_NAME = "zx195.com"
+SERVER_NAME = "www.milioo.com"
 # 访问的页面
 URL = '/'
 # 同时运行的线程数 （每个电脑能开的线程数不同（我：893个线程），如果超过了系统的最大负荷，则只创建能创建的最大线程数）

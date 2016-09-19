@@ -39,9 +39,9 @@ def test_start(i):
             if 'content' in res_body:
                 body = urllib.parse.unquote(eval(res_body)["content"])
                 res.write(str(i)+'# '+eval(res_body)["time"]+':'+body+'\n\n')
-                print('第',i,'封站内信获取成功')
+                print('第', i, '封站内信获取成功')
             else:
-                print('没有找到第',i,'封站内信')
+                print('没有找到第', i, '封站内信')
         else:
             print('status:', result.status)
         conn.close()
@@ -52,16 +52,16 @@ def test_start(i):
         oldError += newErrorId
         errorId.write(oldError)
         errorId.close()
-        print('获取第',i,'封站内信失败',e)
+        print('获取第', i, '封站内信失败', e)
 
-i = 9851;
-nowI = i;
+i = 9851
+nowI = i
 res = open('result'+str(i)+'_'+str(math.floor(time.time()))+'.txt', 'w')
 while True:
     if i - nowI >= 10000:
         res.close()
         res = open('result'+str(i)+'_'+str(math.floor(time.time()))+'.txt', 'w')
-        nowI = i;
+        nowI = i
     test_start(i)
     # time.sleep(0.5)
     i += 1
