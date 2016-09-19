@@ -1,4 +1,7 @@
-#  encoding=utf-8
+# encoding=utf-8
+#
+# Python 3.5
+# 需要安装pymysql模块
 
 import pymysql
 
