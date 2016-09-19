@@ -1,14 +1,9 @@
 #! /usr/bin/env python3
 # -*- coding:utf-8 -*-
 
-import os
-import sys
 import urllib.request
 import urllib.parse
 import socket
-
-curPath = os.path.abspath(os.path.dirname(__file__))
-sys.path.append(curPath)
 
 
 class curl:
