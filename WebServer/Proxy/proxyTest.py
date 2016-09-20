@@ -1,25 +1,16 @@
 #! /usr/bin/env python3
 # -*- coding:utf-8 -*-
+#
 
 import urllib.request
 import urllib.parse
 import socket
 
 readyIp = [
-            '111.12.251.169:80',
-            '111.12.251.172:80',
-            '111.12.251.173:80',
-            '111.12.251.174:80',
-            '111.12.251.207:80',
-            '111.12.251.213:80',
-            '117.135.250.133:80',
-            '117.135.250.134:80',
-            '120.192.92.98:80',
-            '183.245.146.62:80',
-            '211.143.146.231:80',
-            '221.130.13.238:80'
+        '212.83.166.180:8080'
             ]
 
+successIp = []
 deadIp = []
 
 class curl:
@@ -33,7 +24,7 @@ class curl:
         # data = urllib.parse.urlencode(self.param).encode(encoding='UTF8');
         req = urllib.request.Request(url)
         req.add_header('User-Agent', self.user_agent)
-        socket.setdefaulttimeout(10)  # 3秒未响应则为超时，跳过执行下一条
+        socket.setdefaulttimeout(5)  # 3秒未响应则为超时，跳过执行下一条
         try:
             # 添加代理
             proxy_handler = urllib.request.ProxyHandler({'http': ip})
@@ -47,6 +38,7 @@ class curl:
             response = opener.open(url)
             # 获取请求返还数据
             response_data = response.read()
+            successIp.append(ip)
             print(ip, "正确：" + str(response_data))
         except Exception as e:
             deadIp.append(ip)
@@ -54,9 +46,10 @@ class curl:
 
 cu = curl()
 for ip in readyIp:
-    cu.run("http://www.langsspt.com/", ip)
+    cu.run("http://cn-proxy.com/", ip)
 
 print('失效的ip数:', len(deadIp))
+print('成功的ip数:', str(successIp))
 
 # cu = curl()
 # cu.run('http://www.langsspt.com/', '210.13.73.133:8080')

