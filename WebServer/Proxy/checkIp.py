@@ -14,20 +14,20 @@ import time
 
 
 class CheckIp:
-    def __init__(self):
+    def __init__(self, do_all, create_thread, url, check_path, fail_path):
         # 客户端信息
         self.user_agent = 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 \
                         (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36'
         # 是否要测试所有的ip（包括 之前失效的ip）
-        self.All = False
+        self.All = do_all
         # 计划启动的线程数
-        self.createThread = 40
+        self.createThread = create_thread
         # 测试地址
-        self.url = "http://www.langsspt.com/"
+        self.url = url
         # 测试ip文件地址
-        self.check_path = 'checkIp.txt'
+        self.check_path = check_path
         # 失效ip文件地址
-        self.fail_path = 'failip.txt'
+        self.fail_path = fail_path
 
         """******以下是内部变量*******"""
         # 要检测的ip
@@ -81,10 +81,10 @@ class CheckIp:
             self.successIp.append(ip2)
             check_file.seek(0, 1)
             check_file.write(ip2+'\n')
-            print(ip2, "成功")
+            print(str(self.checked), ':', str(len(self.check_ip)), ip2, "成功")
         except Exception as e:
             self.deadIp.append(ip2)
-            print(ip2, "错误：", e)
+            print(str(self.checked), ':', str(len(self.check_ip)), ip2, "错误：", e)
 
     def catch_done(self, check_file, fail_ip):
         """
@@ -117,7 +117,6 @@ class CheckIp:
                 self.check_ip.append(ip)
         else:
             self.lines = fail_ip.readlines()
-        print(self.check_ip)
         check_file.seek(0)
         check_file.truncate()
         fail_ip.seek(0)

@@ -20,7 +20,7 @@ DEAD_THREAD = 0
 
 user_agent = 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 \
              (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36'
-readyIp = open('proxyIp.txt', 'r').readlines()
+readyIp = open('ip.txt', 'r').readlines()
 
 
 class ProxyThread(threading.Thread):

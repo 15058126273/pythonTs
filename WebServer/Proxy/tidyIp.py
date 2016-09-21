@@ -4,9 +4,9 @@
 
 
 class TidyIp:
-    def __init__(self, check_all):
-        self.fail_path = 'failip.txt'
-        self.check_path = 'checkIp.txt'
+    def __init__(self, check_all, fail_path, check_path):
+        self.fail_path = fail_path
+        self.check_path = check_path
         # 是否删除与失效ip重复的ip
         self.checkAll = check_all
         self.failIp = []

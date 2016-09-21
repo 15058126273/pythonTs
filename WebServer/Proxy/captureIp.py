@@ -11,19 +11,20 @@ import re
 
 
 class CaptureIp:
-    def __init__(self):
-        self.url = 'http://www.kuaidaili.com/free/inha/'
+    def __init__(self, url, page, pages, save_path, line_size):
+        self.url = url
         self.user_agent = 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 \
                     (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'
-        self.file_path = 'ipbody.txt'
-        self.save_path = 'checkIp.txt'
-        self.got_ip = []
-        # 是否验证抓取到的ip
-        self.need_verify = True
         # 起始页号
-        self.page = 1
+        self.page = page
         # 抓取页数
-        self.pages = 10
+        self.pages = pages
+        # 端口号在ip后几行
+        self.line_size = line_size
+
+        self.file_path = 'ipbody.txt'
+        self.save_path = save_path
+        self.got_ip = []
 
     def http_conn(self, page):
         req = urllib.request.Request(self.url)
@@ -36,30 +37,35 @@ class CaptureIp:
             opener.addheaders = [
                 ('User-Agent', self.user_agent)
             ]
-            response = opener.open(self.url+str(page)+'/')
+            response = opener.open(self.url.replace('_PAGE', str(page)))
             data = response.read()
-            ipbody = open(self.file_path, 'rb+')
-            ipbody.seek(0)
-            ipbody.truncate()
-            ipbody.write(data)
-            ipbody.close()
+            body1 = open(self.file_path, 'rb+')
+            body1.seek(0)
+            body1.truncate()
+            body1.write(data)
+            body1.close()
             self.check_collect()
         except Exception as e:
             print("错误：", e)
 
     def dispose_data(self):
-        body = open(self.file_path, 'rb')
+        body = open(self.file_path, 'rb+')
         line = body.readline()
         while line:
-            res = re.search(r'>(([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3}))</td>', str(line))
+            res = re.search(r'(([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3}))', str(line))
             if res is not None:
                 if res.group(1):
                     host = res.group(1)
-                    line = body.readline()
-                    res = re.search(r'>([0-9]{1,5})</td>', str(line))
+                    i = 0
+                    while i < self.line_size:
+                        line = body.readline()
+                        i += 1
+                    res = re.search(r'([0-9]{1,5})', str(line))
                     port = res.group(1)
                     self.got_ip.append(host+':'+port)
             line = body.readline()
+        body.seek(0)
+        body.truncate()
         body.close()
 
     def check_collect(self):
