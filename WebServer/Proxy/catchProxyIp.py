@@ -11,19 +11,33 @@ def dispose_data(file_path):
     body = open(file_path, 'rb')
     line = body.readline()
     while line:
-        res = re.search(r'<td>((.*)\.(.*)\.(.*)\.(.*))</td>', str(line))
+        res = re.search(r'>(([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3}))</td>', str(line))
         if res is not None:
             if res.group(1):
                 host = res.group(1)
                 line = body.readline()
-                res = re.search(r'<td>(.*)</td>', str(line))
+                res = re.search(r'>([0-9]{1,5})</td>', str(line))
                 port = res.group(1)
                 ip.append(host+':'+port)
         line = body.readline()
 
 
-def start(catch_path, save_path):
-    dispose_data(catch_path)
+def dispose_data2(file_path):
+    body = open(file_path, 'rb')
+    line = body.readline()
+    while line:
+        res = re.search(r'(([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3}):([0-9]{1,5}))@', str(line))
+        if res is not None:
+            if res.group(1):
+                ip.append(res.group(1))
+        line = body.readline()
+
+
+def start(catch_path, save_path, mold):
+    if mold == 1:
+        dispose_data(catch_path)
+    else:
+        dispose_data2(catch_path)
     nowFile = open(save_path, 'r+')
     for i in ip:
         nowFile.seek(0, 2)
@@ -31,5 +45,5 @@ def start(catch_path, save_path):
     nowFile.close()
 
 
-start('ipbody.txt', 'proxyIp.txt')
+start('ipbody.txt', 'checkIp.txt', 2)
 print('完成')
