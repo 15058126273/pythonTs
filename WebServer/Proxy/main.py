@@ -52,6 +52,6 @@ def check(do_all, create_thread, url, check_path, fail_path):
 
 # capture('http://www.kuaidaili.com/free/inha/_PAGE/', 1, 10, 'checkIp.txt', 1)
 #
-check(False, 50, "http://www.langsspt.com/", 'ip.txt', 'failip.txt')
+check(True, 50, "http://www.szlau.com/", 'checkIp.txt', 'failip.txt')
 
-tidy(True, 'failip.txt', 'ip.txt')
+tidy(True, 'failip.txt', 'checkIp.txt')

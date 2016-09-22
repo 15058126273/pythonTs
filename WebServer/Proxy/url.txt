@@ -2,5 +2,4 @@ http://www.kuaidaili.com/free/inha/_PAGE/     快代理   line_size:1
 http://www.xicidaili.com/wn/_PAGE/                  西刺 国外高匿   line_size:1
 http://www.xicidaili.com/nn/_PAGE/                  西刺 国内高匿   line_size:1
 http://www.xicidaili.com/nt/_PAGE/                  西刺 国内普通   line_size:1
-http://www.proxy360.cn/Region/China                 line_size: 3
 http://www.66ip.cn/_PAGE.html                       line_size: 1

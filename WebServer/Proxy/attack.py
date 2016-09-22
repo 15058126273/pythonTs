@@ -42,7 +42,7 @@ class ProxyThread(threading.Thread):
         i = math.floor(random.random()*(len(readyIp)-1))
         socket.setdefaulttimeout(5)  # 超时未响应则抛出timeout异常
         try:
-            proxy_handler = urllib.request.ProxyHandler({'http': readyIp[i].replace('\n','')})
+            proxy_handler = urllib.request.ProxyHandler({'http': readyIp[i].replace('\n', '')})
             proxy_auth_handler = urllib.request.ProxyBasicAuthHandler()
             opener = urllib.request.build_opener(proxy_handler, proxy_auth_handler)
             # 添加头信息
@@ -50,6 +50,7 @@ class ProxyThread(threading.Thread):
                 ('User-Agent', user_agent)
             ]
             response = opener.open(url)
+            print(str(response.read())[0: 50])
         except:
             pass
 
