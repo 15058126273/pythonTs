@@ -54,7 +54,7 @@ def test_start(i):
         errorId.close()
         print('获取第', i, '封站内信失败', e)
 
-i = 9851
+i = 34750
 nowI = i
 res = open('result'+str(i)+'_'+str(math.floor(time.time()))+'.txt', 'w')
 while True:
