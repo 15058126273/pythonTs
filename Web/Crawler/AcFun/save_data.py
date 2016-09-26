@@ -102,6 +102,8 @@ def save(video, update):
             sql = sql.replace('COLUMN', column).replace('VALUES', values)
             cur.execute(sql, tuple(value))
         conn.commit()
+    except:
+        pass
     finally:
         cur.close()
         conn.close()

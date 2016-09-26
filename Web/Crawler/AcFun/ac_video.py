@@ -36,15 +36,13 @@ class AcFun:
                 url = 'http://www.acfun.tv/v/ac'+str(id)
                 response = self.opener.open(url)
                 data = response.read().decode()
-                del response
-                if data is not None and 'title' in data:
+                if data is not None and '<title>' in data:
                     data_str = urllib.parse.unquote(str(data))
                     res = re.search(r'<title>(.*)</title>', data_str)
                     if res is not None and res.group(1):
                         video = {'id': id, 'video_name': res.group(1), 'link': url}
                         save_data.save(video, False)
                         self.get_data(id)
-                        del video
             except:
                 pass
 
@@ -56,12 +54,9 @@ class AcFun:
         try:
             url = 'http://www.acfun.tv/content_view.aspx?contentId='+str(id)
             response = self.opener.open(url)
-            del url
             data = response.read().decode()
-            del response
             if data is not None:
                 data_list = eval(data)
-                del data
                 video = {'id': id,
                          'collect_num': data_list[5],
                          'view_num': data_list[0],
@@ -69,9 +64,7 @@ class AcFun:
                          'banana_num': data_list[6],
                          'comment_num': data_list[1]
                          }
-                del data_list
                 save_data.save(video, True)
-                del video
         except:
             pass
 
@@ -97,8 +90,8 @@ def start(start_id, end_id, thread_num):
     finally:
         create_threads = len(threads)
 
-create_threads = 0;
+create_threads = 0
 end_threads = 0
-start(11594, 3500000, 100)
+start(924000, 999999, 10)
 
 
