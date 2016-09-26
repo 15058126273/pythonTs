@@ -78,7 +78,7 @@ class AcFun:
                              'comment_num': data_video['reply']
                              }
                     save_data.save(video, True)
-        except Exception as e:
+        except:
             pass
 
 
@@ -105,6 +105,6 @@ def start(start_id, end_id, thread_num):
 
 create_threads = 0
 end_threads = 0
-start(5022, 5022, 1)
+start(4500000, 6000000, 100)
 
 
