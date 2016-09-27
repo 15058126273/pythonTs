@@ -3,14 +3,15 @@
     python: 3.5
     author: yjy
     time: 2016-09-24
-    desc: 统计acfun所有视频
+    desc: 统计所有视频
 """
 import pymysql
 
 
 class StatAF:
-    def __init__(self):
-        pass
+    def __init__(self, table, column):
+        self.table = table
+        self.column = column
 
     def get_conn(self):
         """
@@ -27,7 +28,7 @@ class StatAF:
         )
         return conn
 
-    def get_top(self, mold, top):
+    def get_top(self, top):
         """
         按mold统计最好的前top个视频
         :param mold: 类别 view_num:观看量 collect_num:收藏量 dan_num:弹幕数 comment_num:评论数 banana:香蕉数
@@ -38,7 +39,7 @@ class StatAF:
         conn = self.get_conn()
         cur = conn.cursor()
         try:
-            sql = 'select id,link,video_name from ac_video order by '+mold+' desc limit 0,'+str(top)
+            sql = 'select link,video_name from '+self.table+' order by '+self.column+' desc limit 0,'+str(top)
             cur.execute(sql)
             data = cur.fetchall()
         except:
@@ -49,20 +50,22 @@ class StatAF:
             conn.close()
             return data
 
-    def make_li(self, mold, top):
-        data = self.get_top(mold, top)
+    def make_li(self, top):
+        data = self.get_top(top)
         if data:
-            li_file = open('li.txt', 'w')
+            li_file = open('li.txt', 'wb')
+            li_file.seek(0)
+            li_file.truncate()
             i = 1
             for v in data:
-                name = v[2].replace(' - AcFun弹幕视频网 - 认真你就输啦 (・ω・)ノ- ( ゜- ゜)つロ', '')
-                li = '<a href="'+v[1]+'" target="_blank"><li class="listLi"'
+                name = v[1]
+                li = '<a href="'+v[0]+'" target="_blank"><li class="listLi"'
                 li += ' title="'+name+'"\>'+str(i)+'.'+name+'</li></a>\n'
                 li_file.seek(0, 2)
-                li_file.write(li)
+                li_file.write(li.encode())
                 i += 1
             li_file.close()
 
 
-sa = StatAF()
-sa.make_li('banana_num', 100)
+sa = StatAF('bi_video', 'coin_num')
+sa.make_li(50)
