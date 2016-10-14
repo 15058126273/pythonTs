@@ -55,7 +55,6 @@ class AcFun:
                             self.get_data(id)
             except:
                 pass
-
         else:
             end_threads += 1
             result()
