@@ -11,6 +11,7 @@ import threading
 import sys
 import random
 import math
+import socket
 
 
 class Req:
@@ -38,6 +39,7 @@ class Req:
 
     def http_conn(self):
         try:
+            socket.setdefaulttimeout(5)
             rani = math.floor(random.random()*len(self.ips))
             ip = self.ips[rani].replace("\n", '')
             proxies = {"http": 'http://' + ip + '/', "https": 'http://' + ip + '/'}

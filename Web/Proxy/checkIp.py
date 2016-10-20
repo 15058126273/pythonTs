@@ -79,9 +79,10 @@ class CheckIp:
             opener.addheaders = [
                 ('User-Agent', self.user_agent)
             ]
-            opener.open(self.url)
-            # response = opener.open(self.url)
-            # data = response.read()
+            response = opener.open(self.url)
+            data = response.read()
+            if 'langsspt' in str(data):
+                print(data)
             self.successIp.append(ip2)
             check_file.seek(0, 1)
             check_file.write(ip2+'\n')
