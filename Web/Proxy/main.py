@@ -49,9 +49,9 @@ def check(do_all, create_thread, url, check_path, fail_path):
     """
     checkIp.CheckIp(do_all, create_thread, url, check_path, fail_path).start()
 
+if __name__ == "__main__":
+    # capture('http://www.66ip.cn/_PAGE.html', 1, 100, 'checkIp.txt', 1)
 
-# capture('http://www.kuaidaili.com/free/inha/_PAGE/', 1, 10, 'checkIp.txt', 1)
-#
-check(True, 50, "http://www.szlau.com/", 'checkIp.txt', 'failip.txt')
+    # check(False, 100, "http://www.langsspt.com/", 'checkIp.txt', 'failip.txt')
 
-tidy(True, 'failip.txt', 'checkIp.txt')
+    tidy(True, 'failip.txt', 'checkIp.txt')

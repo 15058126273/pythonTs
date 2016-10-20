@@ -39,10 +39,11 @@ class CaptureIp:
             ]
             response = opener.open(self.url.replace('_PAGE', str(page)))
             data = response.read()
+            data = str(data).replace("</td><td>", "</td>\n<td>")
             body1 = open(self.file_path, 'rb+')
             body1.seek(0)
             body1.truncate()
-            body1.write(data)
+            body1.write(data.encode())
             body1.close()
             self.check_collect()
         except Exception as e:

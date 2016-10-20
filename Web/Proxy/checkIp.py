@@ -11,6 +11,7 @@ import socket
 import threading
 import math
 import time
+import requests
 
 
 class CheckIp:
@@ -45,6 +46,8 @@ class CheckIp:
         # 已经结束的线程数
         self.doneNum = 0
 
+        self.printnum = 0
+
     def run_check(self, check_file, fail_ip):
         while self.checked != len(self.check_ip):
             self.checked += 1
@@ -67,6 +70,7 @@ class CheckIp:
         req.add_header('User-Agent', self.user_agent)
         socket.setdefaulttimeout(5)  # 超时未响应则为超时，跳过执行下一条
         try:
+            msg = "成功"
             # 添加代理
             proxy_handler = urllib.request.ProxyHandler({'http': ip2})
             proxy_auth_handler = urllib.request.ProxyBasicAuthHandler()
@@ -81,10 +85,40 @@ class CheckIp:
             self.successIp.append(ip2)
             check_file.seek(0, 1)
             check_file.write(ip2+'\n')
-            print(str(self.checked), ':', str(len(self.check_ip)), ip2, "成功")
         except Exception as e:
             self.deadIp.append(ip2)
-            print(str(self.checked), ':', str(len(self.check_ip)), ip2, "错误：", e)
+            msg = "错误：" + str(e)[0:50]
+        self.printnum += 1
+        print(str(self.printnum), ':', str(len(self.check_ip)), ip2, msg)
+
+    def checking2(self, ip2, check_file):
+        """
+        代理连接测试
+        :param ip2: 测试的代理ip
+        :param check_file: 存放成功的代理ip文件
+        :return:
+        """
+        ip2 = ip2.replace('\n', '')
+        if ip2 in self.successIp or ip2 in self.deadIp:
+            return
+        socket.setdefaulttimeout(5)  # 超时未响应则为超时，跳过执行下一条
+        msg = "成功"
+        try:
+            headers = {'User-Agent': self.user_agent}
+            proxies = {"http": 'http://' + ip2 + '/', "https": 'http://' + ip2 + '/'}
+            res = requests.get(self.url, params=None, headers=headers, proxies=proxies)
+            if res.status_code == 200:
+                self.successIp.append(ip2)
+                check_file.seek(0, 1)
+                check_file.write(ip2 + '\n')
+            else:
+                self.deadIp.append(ip2)
+                msg = "错误："+str(res.status_code)
+        except Exception as e:
+            self.deadIp.append(ip2)
+            msg = "错误："+str(e)[0:50]
+        self.printnum += 1
+        print(str(self.printnum), ':', str(len(self.check_ip)), ip2, msg)
 
     def catch_done(self, check_file, fail_ip):
         """
@@ -106,7 +140,6 @@ class CheckIp:
             print('验证耗时：', math.floor(time.clock()), '秒')
 
     def start(self):
-        time.clock()
         # 要测试的ip文件
         check_file = open(self.check_path, 'r+')
         # 之前失效的ip文件

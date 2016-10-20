@@ -9,6 +9,9 @@ import requests
 import json
 import threading
 import sys
+import random
+import math
+
 
 class Req:
     def __init__(self, url, method="get", headers=None, threadnum=1 ):
@@ -18,7 +21,9 @@ class Req:
         self.headers = headers
         self.threads = []
         self.creatednum = 0
-
+        iptxt = open("ip.txt", 'r')
+        self.ips = iptxt.readlines()
+        iptxt.close()
 
     def http_loop(self):
         try:
@@ -33,10 +38,13 @@ class Req:
 
     def http_conn(self):
         try:
+            rani = math.floor(random.random()*len(self.ips))
+            ip = self.ips[rani].replace("\n", '')
+            proxies = {"http": 'http://' + ip + '/', "https": 'http://' + ip + '/'}
             if self.method.lower() == "get":
-                requests.get(self.url, data=None, headers=self.headers)
+                requests.get(self.url, data=None, headers=self.headers, proxies=proxies)
             else:
-                requests.post(self.url,data=None,json=None,headers=self.headers)
+                requests.post(self.url, data=None, json=None, headers=self.headers, proxies=proxies)
         except:
             pass
 
