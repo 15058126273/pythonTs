@@ -19,8 +19,8 @@ def invoke_gcd(target):
     a = random.randint(0, 100000)
     b = random.randint(0, 100000)
     time.clock()
-    print(a, "与", b, "的最大公约数为：")
-    print(target.gcd(10, 5), "耗时：", round(time.clock(), 6))
+    print(52018, "与", 5828, "的最大公约数为：")
+    print(target.gcd(52018, 5828), "耗时：", round(time.clock(), 6))
 
 
 class GcdD:
@@ -71,19 +71,40 @@ class GcdG:
         if a <= 0 or b <= 0:
             return 0
         t = 1
-        while 1:
+        while True:
             if a % 2 == 0 and b % 2 == 0:
                 a /= 2
                 b /= 2
                 t *= 2
-            elif (a - b) > 0:
+            elif a > b:
                 a -= b
-            elif (a - b) < 0:
+            elif a < b:
                 b -= a
             else:
                 return t*a
 
 
-GcdG()
+class GcdB:
+    """
+    更相减损法引入位运算
+    """
+    def __init__(self):
+        invoke_gcd(self)
+
+    def gcd(self, a, b):
+        if a <= 0 or b <= 0:
+            return 0
+        t = 1
+        while True:
+            if a | b % 2 == 0:
+                a >> 1, b >> 1, t << 1
+            elif a > b:
+                a -= b
+            elif a < b:
+                b -= a
+            else:
+                return t*a
+
+GcdB()
 
 
