@@ -1,3 +1,10 @@
+# -*- encoding=utf-8 -*-
+"""
+	python: 3.5
+	author: yjy
+	time: 2016-11-25
+	desc: 抓取淘宝天猫阿里巴巴京东平台的宝贝详情
+"""
 import urllib.request
 import re
 import utils
