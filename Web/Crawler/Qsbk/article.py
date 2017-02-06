@@ -78,6 +78,6 @@ def start(start_id, end_id, thread_num):
 
 create_threads = 0
 end_threads = 0
-start(10000, 118500000, 1)
+start(10000, 118494738, 1)
 
 
