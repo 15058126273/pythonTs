@@ -10,23 +10,18 @@ import json
 import time
 
 checkapi = "https://checkapi.aliyun.com/check/checkdomain"
-token = "check-web-hichina-com%3A586su69u61skrvkdcyo3tq1ob8tuhmgx"
+token = "check-web-hichina-com:1etx1glfwv32szgqu98ahei9wdxias4t"
 headers = {
-    'cookie': 'cna=7qVEEPHnOGQCAXPYeLxLxDHn; \
-    login_aliyunid="aly_niuss00****"; \
-    login_aliyunid_ticket=WaCmBZHIzsgdZq64XXWQgyKFeuf0vpmV*s*CT58JlM_1t$w3mW$4wSh_zriUFJyhxe4O*aOvNXTtkFYbu4zqckJ2vk_0fpof_BNTwUhTOoNC1ZBeeMfKJzxdnb95hYssNIZor6q7SCxRtgmGCbifG24d0; \
-    login_aliyunid_csrf=_csrf_tk_1861586383567790; \
-    login_aliyunid_pk=1855560471338865; \
-    hssid=1NXLwyE1bV5xEJDXNtmZdyg1; \
-    hsite=6; \
-    aliyun_country=CN; \
-    aliyun_site=CN; \
-    aliyun_choice=CN; \
-    industry-tip=true; \
-    _gat=1; \
-    l=AtnZ9gaCVRRdmReo3igdKGrUac-xVM0Y; \
-    isg=Alpa8Zu71s0FGVUrCbXT-hFmqwZdEd5lpnvnH2TRNO241_4RSBrkdA1n0RQx; \
-    _ga=GA1.2.2016820849.1473420788',
+    'cookie': 'cna=0jW0ELoAp3YCATywgZSo5cVw; \
+                aliyun_choice=CN; \
+                aliyun_country=CN; \
+                aliyun_site=CN; \
+                _gat=1; \
+                JSESSIONID=RM566QD1-3UMHA4Q0OZ9J6NYAGTBM1-AVG3VUYI-994X3; \
+                tmp0=c8WhVh5Avk6gEEWwyjscNz9VvxWX7NRmDCS3yyTjWbjZ9h2e%2BQu%2Bf2JcHpu2nKjZ9CNxmaVgCot98zjkJamzy5Q%2FNMC3maLW%2BAWH6x%2Fm4GEqrzx12tN163mAfW8QDN0A3c2t%2BViwp87fa3kmjbyqQA%3D%3D; \
+                l=Anh4lIvxdlpLty8AZJ2sujCqyCwK1txr; \
+                isg=Arq60btRtqzGSDqq1DmqzVD8C-Di0z5Ff7C0rcSzUc0Yt1rxrfuOVYDNcdyL; \
+                _ga=GA1.2.1402247830.1483939865',
     'pragma': 'no-cache',
     'upgrade-insecure-requests': '1',
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36'
@@ -50,7 +45,7 @@ def check(domain):
             elif code == 0:
                 print("域名已注册：", domain)
                 df = open(usedfile, 'w')
-                df.write(domain + '\n')
+                df.write(str(currentdigroup) + '\n')
                 df.close()
         else:
             print("请求失败：", res.status_code)
@@ -64,7 +59,10 @@ chartuple = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
              'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
              'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
              'u', 'v', 'w', 'x', 'y', 'z')
-currentdigroup = [1, 0, 24, 5]
+cf = open(usedfile, 'r')
+cstr = cf.readline()
+currentdigroup = eval(cstr)
+cf.close()
 lens = len(chartuple)
 while 1:
     changei = len(currentdigroup) - 1
