@@ -10,18 +10,24 @@ import json
 import time
 
 checkapi = "https://checkapi.aliyun.com/check/checkdomain"
-token = "check-web-hichina-com:1etx1glfwv32szgqu98ahei9wdxias4t"
+token = "check-web-hichina-com:eo39xrvs07bclwjblbmv71nv973ych45"
 headers = {
-    'cookie': 'cna=0jW0ELoAp3YCATywgZSo5cVw; \
-                aliyun_choice=CN; \
-                aliyun_country=CN; \
-                aliyun_site=CN; \
-                _gat=1; \
-                JSESSIONID=RM566QD1-3UMHA4Q0OZ9J6NYAGTBM1-AVG3VUYI-994X3; \
-                tmp0=c8WhVh5Avk6gEEWwyjscNz9VvxWX7NRmDCS3yyTjWbjZ9h2e%2BQu%2Bf2JcHpu2nKjZ9CNxmaVgCot98zjkJamzy5Q%2FNMC3maLW%2BAWH6x%2Fm4GEqrzx12tN163mAfW8QDN0A3c2t%2BViwp87fa3kmjbyqQA%3D%3D; \
-                l=Anh4lIvxdlpLty8AZJ2sujCqyCwK1txr; \
-                isg=Arq60btRtqzGSDqq1DmqzVD8C-Di0z5Ff7C0rcSzUc0Yt1rxrfuOVYDNcdyL; \
-                _ga=GA1.2.1402247830.1483939865',
+    'cookie': 'cna=7qVEEPHnOGQCAXPYeLxLxDHn; \
+    login_aliyunid="aly_niuss00****"; \
+    login_aliyunid_ticket=WaCmBZHIzsgdZq64XXWQgyKFeuf0vpmV*s*CT58JlM_1t$w3mW$4wSh_zriUFJyhxe4O*aOvNXTtkFYbu4zqckJ2vk_0fpof_BNTwUhTOoNC1ZBeeMfKJzxdnb95hYssNIZor6q7SCxRtgmGCbifG24d0; \
+    login_aliyunid_csrf=_csrf_tk_1861586383567790; \
+    login_aliyunid_pk=1855560471338865; \
+    hssid=1NXLwyE1bV5xEJDXNtmZdyg1; \
+    hsite=6; \
+    aliyun_country=CN; \
+    aliyun_site=CN; \
+    aliyun_choice=CN; \
+    JSESSIONID=Y0666R81-YTMHRTRWSY5RP1ZRSJJU1-358L6UYI-ILCS3; \
+    tmp0=c8WhVh5Avk6gEEWwyjscN7z6D%2BRR1MtQeF3ZAyZW3WLXRxButCkV6z9DCyb6kSbZuSstGSae9vSqz7V4CHpURWvM9UGBB9AGFikTkbIo%2F0NA0%2FGxhY6QnYtPvsTEhiHhvXKZ4Gw8FNbh89bjJqA7RA%3D%3D; \
+    _gat=1; \
+    _ga=GA1.2.2016820849.1473420788; \
+    isg=AmhosFRbpJKOWYddT3-BdH9MOVBEKSHYWIEVCSKfguLdfQLn0aG5K5T7A6J3; \
+    l=AubmNQpVMi1W6Pihtena4MR/tlZu8SuK',
     'pragma': 'no-cache',
     'upgrade-insecure-requests': '1',
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36'
