@@ -8,31 +8,23 @@
 import requests
 import json
 import time
+import os
 
 checkapi = "https://checkapi.aliyun.com/check/checkdomain"
-token = "check-web-hichina-com:eo39xrvs07bclwjblbmv71nv973ych45"
+token = "check-web-hichina-com:yxrne2zowg3rjcvo8ufeq4fjg1lrueqh"
 headers = {
-    'cookie': 'cna=7qVEEPHnOGQCAXPYeLxLxDHn; \
-    login_aliyunid="aly_niuss00****"; \
-    login_aliyunid_ticket=WaCmBZHIzsgdZq64XXWQgyKFeuf0vpmV*s*CT58JlM_1t$w3mW$4wSh_zriUFJyhxe4O*aOvNXTtkFYbu4zqckJ2vk_0fpof_BNTwUhTOoNC1ZBeeMfKJzxdnb95hYssNIZor6q7SCxRtgmGCbifG24d0; \
-    login_aliyunid_csrf=_csrf_tk_1861586383567790; \
-    login_aliyunid_pk=1855560471338865; \
-    hssid=1NXLwyE1bV5xEJDXNtmZdyg1; \
-    hsite=6; \
-    aliyun_country=CN; \
-    aliyun_site=CN; \
-    aliyun_choice=CN; \
-    JSESSIONID=Y0666R81-YTMHRTRWSY5RP1ZRSJJU1-358L6UYI-ILCS3; \
-    tmp0=c8WhVh5Avk6gEEWwyjscN7z6D%2BRR1MtQeF3ZAyZW3WLXRxButCkV6z9DCyb6kSbZuSstGSae9vSqz7V4CHpURWvM9UGBB9AGFikTkbIo%2F0NA0%2FGxhY6QnYtPvsTEhiHhvXKZ4Gw8FNbh89bjJqA7RA%3D%3D; \
-    _gat=1; \
-    _ga=GA1.2.2016820849.1473420788; \
-    isg=AmhosFRbpJKOWYddT3-BdH9MOVBEKSHYWIEVCSKfguLdfQLn0aG5K5T7A6J3; \
-    l=AubmNQpVMi1W6Pihtena4MR/tlZu8SuK',
-    'pragma': 'no-cache',
-    'upgrade-insecure-requests': '1',
-    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36'
+    'cookie': 'cna=gjW8DyN/8i0CAXPI16GFnIu9',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:49.0) Gecko/20100101 Firefox/49.0'
 }
 
+domainfile = 'save.txt'
+predictedfile = 'predicted.txt'
+usedfile = 'current.txt'
+chartuple = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+             'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
+             'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+             'u', 'v', 'w', 'x', 'y', 'z')
+currentdigroup = [0, 0, 0, 0]
 
 def check(domain):
     try:
@@ -41,53 +33,71 @@ def check(domain):
         if res.status_code == 200:
             data = res.content.decode()
             jsonstr = json.loads(data)
-            code = jsonstr.get("module")[0].get('avail')
-            if code == 1:
-                print("域名未注册：", domain)
-                df = open(domainfile, 'r+')
-                df.seek(0, 2)
-                df.write(domain + '\n')
-                df.close()
-            elif code == 0:
-                print("域名已注册：", domain)
-                df = open(usedfile, 'w')
-                df.write(str(currentdigroup) + '\n')
-                df.close()
+            if jsonstr.get("errorCode") == 0:
+                module = jsonstr.get("module")[0]
+                code = module.get("avail")
+                if code == 1:
+                    print("域名未注册：", domain)
+                    df = open(domainfile, 'r+')
+                    df.seek(0, 2)
+                    df.write(domain + '\n')
+                    df.close()
+                elif code == 0:
+                    print("域名已注册：", domain)
+                    df = open(usedfile, 'w')
+                    df.write(str(currentdigroup) + '\n')
+                    df.close()
+                elif code == 4:
+                    print("域名即将释放：", domain)
+                    yf = open(predictedfile, 'r+')
+                    yf.seek(0, 2)
+                    yf.write(domain + '\n')
+                    yf.close()
+                else:
+                    print("未知code：", module, '>>>>>>>', domain)
+            else:
+                print('error>>>>>>>>>>>', jsonstr)
         else:
             print("请求失败：", res.status_code)
     except Exception as e:
         print("出错了", e)
 
 
-domainfile = 'save.txt'
-usedfile = 'used.txt'
-chartuple = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-             'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
-             'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-             'u', 'v', 'w', 'x', 'y', 'z')
-cf = open(usedfile, 'r')
-cstr = cf.readline()
-currentdigroup = eval(cstr)
-cf.close()
-lens = len(chartuple)
-while 1:
-    changei = len(currentdigroup) - 1
-    while currentdigroup[changei] == lens - 1:
-        currentdigroup[changei] = 0
-        changei -= 1
-        if changei < 0:
-            break
-    if changei < 0:
-        changei = 0
-        while changei < len(currentdigroup) - 1:
-            changei += 1
+def main():
+    global currentdigroup
+    if os.path.exists(usedfile):
+        cf = open(usedfile, 'r')
+        cstr = cf.readline()
+        currentdigroup = eval(cstr)
+        cf.close()
+    if not os.path.exists(domainfile):
+        df = open(domainfile, "w")
+        df.close()
+    if not os.path.exists(predictedfile):
+        yf = open(predictedfile, "w")
+        yf.close()
+    lens = len(chartuple)
+    while 1:
+        changei = len(currentdigroup) - 1
+        while currentdigroup[changei] == lens - 1:
             currentdigroup[changei] = 0
-        currentdigroup.append(0)
-    else:
-        currentdigroup[changei] += 1
-    domain = ''
-    i = 0
-    while i < len(currentdigroup):
-        domain += chartuple[currentdigroup[i]]
-        i += 1
-    check(domain+'.com')
+            changei -= 1
+            if changei < 0:
+                break
+        if changei < 0:
+            changei = 0
+            while changei < len(currentdigroup) - 1:
+                changei += 1
+                currentdigroup[changei] = 0
+            currentdigroup.append(0)
+        else:
+            currentdigroup[changei] += 1
+        domain = ''
+        i = 0
+        while i < len(currentdigroup):
+            domain += chartuple[currentdigroup[i]]
+            i += 1
+        check(domain+'.com')
+
+
+main()
