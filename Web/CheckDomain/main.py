@@ -11,9 +11,9 @@ import time
 import os
 
 checkapi = "https://checkapi.aliyun.com/check/checkdomain"
-token = "check-web-hichina-com:5kxye9l9efdqmmdzjqrqcjstq2lfk44x"
+token = "check-web-hichina-com:kh7lznh5hoqngieri55v99olpkyidkme"
 headers = {
-    'cookie': 'cna=AwciET4BfiECAXPONvvM5WHz',
+    'cookie': 'cna=0jW0ELoAp3YCATywgZSo5cVw',
     'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36'
 }
 
@@ -53,6 +53,8 @@ def check(domain):
                     yf.seek(0, 2)
                     yf.write(domain + '\n')
                     yf.close()
+                elif code == -3:
+                    print("域名暂时不能注册：", domain)
                 else:
                     print("未知code：", module, '>>>>>>>', domain)
             else:

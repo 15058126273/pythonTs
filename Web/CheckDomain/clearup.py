@@ -32,6 +32,8 @@ def main():
             else: 
                 print('完')
             line = df.readline()
+        else:
+            print("完成")
     except Exception as e:
         print("出错了", e)
     finally:
@@ -44,7 +46,7 @@ def filtrate(domain):
     if domain:
         flag = False
         length = countstr(domain)
-        if length != 0 and length <=2:
+        if length != 0 and length <=3:
             flag = True
         if flag:
             global first
