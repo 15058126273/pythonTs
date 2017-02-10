@@ -55,6 +55,8 @@ def check(domain):
                     yf.close()
                 elif code == -3:
                     print("域名暂时不能注册：", domain)
+                elif code == -1:
+                    print("timeout:", domain)
                 else:
                     print("未知code：", module, '>>>>>>>', domain)
             else:
