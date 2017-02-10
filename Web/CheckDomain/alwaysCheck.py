@@ -2,8 +2,8 @@
 """
     python: 3.5
     author: yjy
-    time: 2017-02-06
-    desc: 遍历域名 查找 未注册的较短域名
+    time: 2017-02-10
+    desc: 遍历三位数及以下域名是否 即将释放
 """
 import requests
 import json
@@ -17,14 +17,13 @@ headers = {
     'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36'
 }
 
-domainfile = 'save.txt'
-predictedfile = 'predicted.txt'
-usedfile = 'current.txt'
+domainfile = 'savedays.txt'
+currentfile = 'savedays_current.txt'
 chartuple = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
              'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
              'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
              'u', 'v', 'w', 'x', 'y', 'z')
-currentdigroup = [0, 0, 0, 0]
+currentdigroup = [0]
 
 def check(domain):
     try:
@@ -36,7 +35,7 @@ def check(domain):
             if jsonstr.get("errorCode") == 0:
                 module = jsonstr.get("module")[0]
                 code = module.get("avail")
-                if code == 1:
+                if code == 1 or code == 4:
                     print("域名未注册：", domain)
                     df = open(domainfile, 'r+')
                     df.seek(0, 2)
@@ -44,17 +43,14 @@ def check(domain):
                     df.close()
                 elif code == 0:
                     print("域名已注册：", domain)
-                    df = open(usedfile, 'w')
-                    df.write(str(currentdigroup) + '\n')
-                    df.close()
-                elif code == 4:
-                    print("域名即将释放：", domain)
-                    yf = open(predictedfile, 'r+')
-                    yf.seek(0, 2)
-                    yf.write(domain + '\n')
-                    yf.close()
+                    cf = open(currentfile, 'w')
+                    cf.write(str(currentdigroup))
+                    cf.close()
                 elif code == -3:
                     print("域名暂时不能注册：", domain)
+                    cf = open(currentfile, 'w')
+                    cf.write(str(currentdigroup))
+                    cf.close()
                 elif code == -1:
                     print("timeout:", domain)
                 else:
@@ -69,19 +65,16 @@ def check(domain):
 
 def main():
     global currentdigroup
-    if os.path.exists(usedfile):
-        cf = open(usedfile, 'r')
-        cstr = cf.readline()
-        currentdigroup = eval(cstr)
-        cf.close()
     if not os.path.exists(domainfile):
         df = open(domainfile, "w")
         df.close()
-    if not os.path.exists(predictedfile):
-        yf = open(predictedfile, "w")
-        yf.close()
+    if os.path.exists(currentfile):
+        cf = open(currentfile, "r")
+        i = cf.readline()
+        if i:
+            currentdigroup = eval(i)
     lens = len(chartuple)
-    while 1:
+    while len(currentdigroup) < 4:
         changei = len(currentdigroup) - 1
         while currentdigroup[changei] == lens - 1:
             currentdigroup[changei] = 0
