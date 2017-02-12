@@ -11,10 +11,11 @@ import time
 import os
 
 checkapi = "https://checkapi.aliyun.com/check/checkdomain"
-token = "check-web-hichina-com:rsidk95sfg4lhszohjd2cfqp9nlf7hpy"
+token = "check-web-hichina-com:r9j1luz80r39h2vts77f5tsaqmskxesi"
 headers = {
-    'cookie': 'a0W1EHToizQCAXPNbSnPjg7N',
-    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36'
+    'cookie': 'cna=PJo8D0/MI0ACAX17Z0t8aWd1',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) \
+                  AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'
 }
 
 domainfile = 'save.txt'
