@@ -11,7 +11,7 @@ import time
 import os
 
 checkapi = "https://checkapi.aliyun.com/check/checkdomain"
-token = "check-web-hichina-com:rsidk95sfg4lhszohjd2cfqp9nlf7hpy"
+token = "check-web-hichina-com:jsomnxh5bppwokhrixinv4evomlah3r8"
 headers = {
     'cookie': 'a0W1EHToizQCAXPNbSnPjg7N',
     'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36'
@@ -95,6 +95,9 @@ def main():
             domain += chartuple[currentdigroup[i]]
             i += 1
         check(domain+'.com')
-
+    else:
+        cf = open(currentfile, "w")
+        cf.write('[0]')
+        cf.close()
 
 main()
