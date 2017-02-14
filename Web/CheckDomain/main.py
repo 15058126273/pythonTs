@@ -11,7 +11,7 @@ import time
 import os
 
 checkapi = "https://checkapi.aliyun.com/check/checkdomain"
-token = "check-web-hichina-com:r9j1luz80r39h2vts77f5tsaqmskxesi"
+token = "check-web-hichina-com:2gxd3xpsr0xnuqos0n888l95tk3u0ay9"
 headers = {
     'cookie': 'cna=PJo8D0/MI0ACAX17Z0t8aWd1',
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) \
@@ -43,8 +43,8 @@ def check(domain):
                     df.seek(0, 2)
                     df.write(domain + '\n')
                     df.close()
-                elif code == 0:
-                    print("域名已注册：", domain)
+                elif code == 0 or code == 5:
+                    print("域名已注册或被预定：", domain)
                     df = open(usedfile, 'w')
                     df.write(str(currentdigroup) + '\n')
                     df.close()
