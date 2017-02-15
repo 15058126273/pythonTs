@@ -39,6 +39,10 @@ class CaptureIp:
             ]
             response = opener.open(self.url.replace('_PAGE', str(page)))
             data = response.read()
+            try:
+                data = data.decode()
+            except:
+                pass
             data = str(data).replace("</td><td>", "</td>\n<td>")
             body1 = open(self.file_path, 'rb+')
             body1.seek(0)

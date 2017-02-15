@@ -70,7 +70,7 @@ class CheckIp:
         req.add_header('User-Agent', self.user_agent)
         socket.setdefaulttimeout(5)  # 超时未响应则为超时，跳过执行下一条
         try:
-            msg = "成功"
+            msg = "..."
             # 添加代理
             proxy_handler = urllib.request.ProxyHandler({'http': ip2})
             proxy_auth_handler = urllib.request.ProxyBasicAuthHandler()
@@ -80,12 +80,19 @@ class CheckIp:
                 ('User-Agent', self.user_agent)
             ]
             response = opener.open(self.url)
-            data = response.read()
-            if 'langsspt' in str(data):
-                print(data)
-            self._successIp.append(ip2)
-            check_file.seek(0, 1)
-            check_file.write(ip2+'\n')
+            if response.status == 200:
+                data = response.read().decode()
+                if data == "{\"errorCode\":213,\"errorMsg\":\"Timeout\",\"success\":\"false\"}":
+                    msg = "成功"
+                    self._successIp.append(ip2)
+                    check_file.seek(0, 2)
+                    check_file.write(ip2+'\n')
+                else:
+                    self._deadIp.append(ip2)
+                    msg = "data信息不匹配"
+            else:
+                self._deadIp.append(ip2)
+                msg = "status状态不正确："+response.status
         except Exception as e:
             self._deadIp.append(ip2)
             msg = "错误：" + str(e)[0:50]

@@ -9,13 +9,11 @@ import requests
 import json
 import time
 import os
+import tokenCode
 
-checkapi = "https://checkapi.aliyun.com/check/checkdomain"
-token = "check-web-hichina-com:2gxd3xpsr0xnuqos0n888l95tk3u0ay9"
-headers = {
-    'cookie': 'a0W1EHToizQCAXPNbSnPjg7N',
-    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36'
-}
+checkapi = tokenCode.checkapi
+token = tokenCode.token
+headers = tokenCode.headers
 
 domainfile = 'savedays.txt'
 currentfile = 'savedays_current.txt'

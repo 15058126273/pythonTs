@@ -50,8 +50,8 @@ def check(do_all, create_thread, url, check_path, fail_path):
     checkIp.CheckIp(do_all, create_thread, url, check_path, fail_path).start()
 
 if __name__ == "__main__":
-    # capture('http://www.66ip.cn/_PAGE.html', 1, 100, 'checkIp.txt', 1)
+    capture('http://www.xicidaili.com/nt/_PAGE/', 1, 100, 'checkIp.txt', 1)
 
-    check(False, 100, "http://www.langsspt.com/", 'checkIp.txt', 'failip.txt')
+    check(False, 100, "https://checkapi.aliyun.com/check/checkdomain", 'checkIp.txt', 'failip.txt')
 
     tidy(True, 'failip.txt', 'checkIp.txt')
