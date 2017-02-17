@@ -7,8 +7,8 @@
 """
 import os
 
-dfpath = "save.txt"
-sfpath = "nice.txt"
+dfpath = os.path.join("file", "save.txt")
+sfpath = os.path.join("file", "nice.txt")
 
 def main():
     """

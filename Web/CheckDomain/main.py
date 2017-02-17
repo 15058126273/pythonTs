@@ -9,19 +9,18 @@ import requests
 import json
 import time
 import os
-import tokenCode
+import commonVariable
+from os.path import join, exists
 
-checkapi = tokenCode.checkapi
-token = tokenCode.token
-headers = tokenCode.headers
+checkapi = commonVariable.checkapi
+token = commonVariable.token
+headers = commonVariable.headers
+chartuple = commonVariable.chartuple
 
-domainfile = 'save.txt'
-predictedfile = 'predicted.txt'
-usedfile = 'current.txt'
-chartuple = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-             'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
-             'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-             'u', 'v', 'w', 'x', 'y', 'z')
+domainfile = join('file','save.txt')
+predictedfile = join('file', 'predicted.txt')
+usedfile = join('file', 'current.txt')
+
 currentdigroup = [0, 0, 0, 0]
 
 def check(domain):
@@ -102,4 +101,5 @@ def main():
         check(domain+'.com')
 
 
-main()
+# main()
+print(exists(domainfile))

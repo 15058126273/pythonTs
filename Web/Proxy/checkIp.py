@@ -49,7 +49,8 @@ class CheckIp:
         self._printnum = 0
 
     def run_check(self, check_file, fail_ip):
-        while self._checked != len(self._check_ip):
+        self._check_ip_len = len(self._check_ip)
+        while self._checked != self._check_ip_len:
             self._checked += 1
             self.checking(self._check_ip[self._checked-1], check_file)
         else:
@@ -66,38 +67,39 @@ class CheckIp:
         ip2 = ip2.replace('\n', '')
         if ip2 in self._successIp or ip2 in self._deadIp:
             return
-        req = urllib.request.Request(self.url)
-        req.add_header('User-Agent', self.user_agent)
-        socket.setdefaulttimeout(5)  # 超时未响应则为超时，跳过执行下一条
-        try:
-            msg = "..."
-            # 添加代理
-            proxy_handler = urllib.request.ProxyHandler({'http': ip2})
-            proxy_auth_handler = urllib.request.ProxyBasicAuthHandler()
-            opener = urllib.request.build_opener(proxy_handler, proxy_auth_handler)
-            # 添加头信息
-            opener.addheaders = [
-                ('User-Agent', self.user_agent)
-            ]
-            response = opener.open(self.url)
-            if response.status == 200:
-                data = response.read().decode()
-                if data == "{\"errorCode\":213,\"errorMsg\":\"Timeout\",\"success\":\"false\"}":
-                    msg = "成功"
-                    self._successIp.append(ip2)
-                    check_file.seek(0, 2)
-                    check_file.write(ip2+'\n')
+        else:
+            req = urllib.request.Request(self.url)
+            req.add_header('User-Agent', self.user_agent)
+            socket.setdefaulttimeout(5)  # 超时未响应则为超时，跳过执行下一条
+            try:
+                msg = "..."
+                # 添加代理
+                proxy_handler = urllib.request.ProxyHandler({'http': ip2})
+                proxy_auth_handler = urllib.request.ProxyBasicAuthHandler()
+                opener = urllib.request.build_opener(proxy_handler, proxy_auth_handler)
+                # 添加头信息
+                opener.addheaders = [
+                    ('User-Agent', self.user_agent)
+                ]
+                response = opener.open(self.url)
+                if response.status == 200:
+                    data = response.read().decode()
+                    if data == "{\"errorCode\":213,\"errorMsg\":\"Timeout\",\"success\":\"false\"}":
+                        msg = "成功"
+                        self._successIp.append(ip2)
+                        check_file.seek(0, 2)
+                        check_file.write(ip2+'\n')
+                    else:
+                        self._deadIp.append(ip2)
+                        msg = "data信息不匹配"
                 else:
                     self._deadIp.append(ip2)
-                    msg = "data信息不匹配"
-            else:
+                    msg = "status状态不正确："+response.status
+            except Exception as e:
                 self._deadIp.append(ip2)
-                msg = "status状态不正确："+response.status
-        except Exception as e:
-            self._deadIp.append(ip2)
-            msg = "错误：" + str(e)[0:50]
+                msg = "错误：" + str(e)[0:50]
         self._printnum += 1
-        print(str(self._printnum), ':', str(len(self._check_ip)), ip2, msg)
+        print(str(self._printnum), ':', str(self._check_ip_len), ip2, msg)
 
     def checking2(self, ip2, check_file):
         """
