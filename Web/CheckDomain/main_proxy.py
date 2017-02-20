@@ -15,11 +15,14 @@ import threading
 import urllib.parse
 import urllib.request
 
+# 检测域名状态接口
 checkapi = commonVariable.checkapi
+# 接口调用用到的token参数
 token = commonVariable.token
+# 请求头headers
 openheaders = commonVariable.openheaders
-chartuple = commonVariable.chartuple
-
+# 组装域名用到的字符集合
+chartuple = commonVariable.charnumtuple
 # 指定保存的文件名与地址
 domainfilepath = os.path.join('file', 'save_INDEX.txt')
 # 保存文件的序号 初始序号0
@@ -30,17 +33,27 @@ fileindexpath = os.path.join('file', 'file_index.txt')
 predictedfilepath = os.path.join('file', 'predicted.txt')
 # 遍历进度的保存地址
 usedfilepath = os.path.join('file', 'current.txt')
-
-
-currentdigroup = [0, 0, 0, 0]
+# 遍历进度
+currentdigroup = [0, 0, 0, 0, 0]
+# 线程池
 threads = []
-proxyipfile = open(os.path.join("file", "proxyIp.txt"), "r")
-proxyips = proxyipfile.readlines()
+# 代理ip文件地址
+proxyipfilepath = os.path.join("file", "proxyIp.txt")
+# 代理ip数组
+proxyips = []
+# 代理ip的数量
 ipcount = len(proxyips) - 1
+# 程序是否正在运行中...
 running = False
 
 
 def checkdomain(domain, flag):
+    """
+    检测域名的状态
+    :param domain: 域名
+    :param flag: 访问接口失败后是否重新调用
+    :return:
+    """
     url = checkapi + "?domain=" + domain + "&token=" + token + "&_" + str(time.time())
     # 添加代理
     ip = proxyips[math.floor(random.random()*ipcount)]
@@ -81,7 +94,10 @@ def checkdomain(domain, flag):
                 else:
                     print("未知code：", module, '>>>>>>>', domain)
             else:
-                print('error>>>>>>>>>>>', jsonstr)
+                if flag:
+                    checkdomain(domain, False)
+                else:
+                    print('error>>>>>>>>>>>', jsonstr)
         else:
             if flag:
                 checkdomain(domain, False)
@@ -95,6 +111,11 @@ def checkdomain(domain, flag):
 
 
 def threadsons(lens):
+    """
+    数字与字母组合
+    :param lens: 字符集合大小
+    :return:
+    """
     global currentdigroup
     while True:
         changei = len(currentdigroup) - 1
@@ -123,6 +144,7 @@ def checkprocess():
     """
     1、检测文件大小,如果文件大小超过1M则新建文件
     2、记录遍历进度
+    :return:
     """
     global fileindex, domainfilepath, fileindexpath, running
     while True:
@@ -145,12 +167,20 @@ def checkprocess():
             usedfile.write(groupstr)
             usedfile.close()
             # 休息几秒
-            time.sleep(3)
+            time.sleep(5)
         
 
 def main():
-    global currentdigroup, threads, fileindex, running, \
+    """
+    主程序入口
+    """
+    global proxyips, currentdigroup, threads, fileindex, running, \
         domainfilepath, fileindexpath, usedfilepath, predictedfilepath
+    # 获取代理ip列表
+    proxyipfile = open(proxyipfilepath, "r")
+    proxyips = proxyipfile.readlines()
+    proxyipfile.close()
+    # 下标保存
     if not os.path.exists(fileindexpath):
         fc = open(fileindexpath, "w")
         fc.write("0")
@@ -160,17 +190,24 @@ def main():
         istr = fc.readline()
         fileindex = int(istr)
         fc.close()
+    # 遍历进度保存
     if os.path.exists(usedfilepath):
         cf = open(usedfilepath, 'r')
-        cstr = cf.readline()
-        currentdigroup = eval(cstr)
-        cf.close()
+        try:
+            cstr = cf.readline()
+            if cstr != "":
+                currentdigroup = eval(cstr)
+        finally:
+            cf.close()
+    # 有效域名保存
     if not os.path.exists(domainfilepath.replace('INDEX', str(fileindex))):
         domainfile = open(domainfilepath.replace('INDEX', str(fileindex)), "w")
         domainfile.close()
+    # 待释放域名保存
     if not os.path.exists(predictedfilepath):
         predictedfile = open(predictedfilepath, "w")
         predictedfile.close()
+    # 域名 待试用字符
     lens = len(chartuple)
     i = 0
     try:

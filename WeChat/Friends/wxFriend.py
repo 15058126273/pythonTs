@@ -10,7 +10,7 @@ import sys
 import math
 import ssl
 import urllib
-import urllib.request,urllib.error
+import urllib.request, urllib.error
 from PIL import Image
 import threading
 
@@ -40,6 +40,8 @@ try:
 except:
     # python 3
     pass
+
+
 def responseState(func, BaseResponse):
     ErrMsg = BaseResponse['ErrMsg']
     Ret = BaseResponse['Ret']
@@ -48,10 +50,12 @@ def responseState(func, BaseResponse):
     if Ret != 0:
         return False
     return True
+
+
 def getUUID():
     global uuid
     url = 'https://login.weixin.qq.com/jslogin'
-    params = { 'appid': 'wx782c26e4c19acffb', 'fun': 'new', 'lang': 'zh_CN', '_': int(time.time()), }
+    params = {'appid': 'wx782c26e4c19acffb', 'fun': 'new', 'lang': 'zh_CN', '_': int(time.time()), }
     r = myRequests.get(url=url, params=params)
     r.encoding = 'utf-8'
     data = r.text
@@ -65,17 +69,18 @@ def getUUID():
         return True
     return False
 
+
 class PicThread(threading.Thread):
     def run(self):
         global qrcode
         qrcode = Image.open(QRImagePath)
         qrcode.show()
 
+
 def showQRImage():
     global tip
-
     url = 'https://login.weixin.qq.com/qrcode/' + uuid
-    params = { 't': 'webwx', '_': int(time.time()), }
+    params = {'t': 'webwx', '_': int(time.time()), }
     r = myRequests.get(url=url, params=params)
     tip = 1
     f = open(QRImagePath, 'wb')
@@ -85,9 +90,11 @@ def showQRImage():
     t = PicThread()
     t.start()
     print('请使用微信扫描二维码以登录')
+
+
 def waitForLogin():
     global tip, base_uri, redirect_uri, push_uri
-    url = 'https://login.weixin.qq.com/cgi-bin/mmwebwx-bin/login?tip=%s&uuid=%s&_=%s' % ( tip, uuid, int(time.time()))
+    url = 'https://login.weixin.qq.com/cgi-bin/mmwebwx-bin/login?tip=%s&uuid=%s&_=%s' % (tip, uuid, int(time.time()))
     r = myRequests.get(url=url)
     r.encoding = 'utf-8'
     data = r.text
@@ -108,7 +115,7 @@ def waitForLogin():
         redirect_uri = pm.group(1) + '&fun=new'
         base_uri = redirect_uri[:redirect_uri.rfind('/')]
         # push_uri与base_uri对应关系(排名分先后)(就是这么奇葩..)
-        services = [ ('wx2.qq.com', 'webpush2.weixin.qq.com'), ('qq.com', 'webpush.weixin.qq.com'), ('web1.wechat.com', 'webpush1.wechat.com'), ('web2.wechat.com', 'webpush2.wechat.com'), ('wechat.com', 'webpush.wechat.com'), ('web1.wechatapp.com', 'webpush1.wechatapp.com'), ]
+        services = [('wx2.qq.com', 'webpush2.weixin.qq.com'), ('qq.com', 'webpush.weixin.qq.com'), ('web1.wechat.com', 'webpush1.wechat.com'), ('web2.wechat.com', 'webpush2.wechat.com'), ('wechat.com', 'webpush.wechat.com'), ('web1.wechatapp.com', 'webpush1.wechatapp.com'), ]
         push_uri = base_uri
         for (searchUrl, pushUrl) in services:
             if base_uri.find(searchUrl) >= 0:
@@ -123,6 +130,8 @@ def waitForLogin():
             pass
         # elif code == '400' or code == '500':
     return code
+
+
 def login():
     global skey, wxsid, wxuin, pass_ticket, BaseRequest
     r = myRequests.get(url=redirect_uri)
@@ -145,6 +154,8 @@ def login():
         return False
     BaseRequest = { 'Uin': int(wxuin), 'Sid': wxsid, 'Skey': skey, 'DeviceID': deviceId, }
     return True
+
+
 def webwxinit():
     url = (base_uri + '/webwxinit?pass_ticket=%s&skey=%s&r=%s' % ( pass_ticket, skey, int(time.time())) )
     params = {'BaseRequest': BaseRequest }
@@ -164,6 +175,8 @@ def webwxinit():
     SyncKey = dic['SyncKey']
     state = responseState('webwxinit', dic['BaseResponse'])
     return state
+
+
 def webwxgetcontact():
     url = (base_uri + '/webwxgetcontact?pass_ticket=%s&skey=%s&r=%s' % ( pass_ticket, skey, int(time.time())) )
     headers = {'content-type': 'application/json; charset=UTF-8'}
@@ -193,11 +206,15 @@ def webwxgetcontact():
             # 自己
             MemberList.remove(Member)
     return MemberList
+
+
 def syncKey():
     SyncKeyItems = ['%s_%s' % (item['Key'], item['Val'])
     for item in SyncKey['List']]
     SyncKeyStr = '|'.join(SyncKeyItems)
     return SyncKeyStr
+
+
 def syncCheck():
     url = push_uri + '/synccheck?'
     params = { 'skey': BaseRequest['Skey'], 'sid': BaseRequest['Sid'], 'uin': BaseRequest['Uin'], 'deviceId': BaseRequest['DeviceID'], 'synckey': syncKey(), 'r': int(time.time()), }
@@ -211,6 +228,8 @@ def syncCheck():
     retcode = pm.group(1)
     selector = pm.group(2)
     return selector
+
+
 def webwxsync():
     global SyncKey
     url = base_uri + '/webwxsync?lang=zh_CN&skey=%s&sid=%s&pass_ticket=%s' % ( BaseRequest['Skey'], BaseRequest['Sid'], urllib.quote_plus(pass_ticket))
@@ -224,17 +243,22 @@ def webwxsync():
     SyncKey = dic['SyncKey']
     state = responseState('webwxsync', dic['BaseResponse'])
     return state
+
+
 def heartBeatLoop():
     while True:
         selector = syncCheck()
         if selector != '0':
             webwxsync()
         time.sleep(1)
+
+
 def main():
     global myRequests
     if hasattr(ssl, '_create_unverified_context'):
         ssl._create_default_https_context = ssl._create_unverified_context
-        headers = {'User-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36'}
+        headers = {'User-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) \
+         AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36'}
         myRequests = requests.Session()
         myRequests.headers.update(headers)
     if not getUUID():
@@ -293,6 +317,8 @@ def main():
         nick = Member['NickName']
         nick = 'nonick' if nick == '' else nick
         print('昵称:',name.ljust(20),';城市: ',city.ljust(10),';性别(0:无,1男,2:女): ',Member['Sex'],';是否星标:',Member['StarFriend'],',签名: ',sign.ljust(30),';备注: ',remark.ljust(10),';微信号:',alias )
+
+
 if __name__ == '__main__':
     main()
     print('查找完成！')

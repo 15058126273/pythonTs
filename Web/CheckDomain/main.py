@@ -101,5 +101,5 @@ def main():
         check(domain+'.com')
 
 
-# main()
-print(exists(domainfile))
+if "__main__" == __name__:
+    main()

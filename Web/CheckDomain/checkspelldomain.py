@@ -2,13 +2,13 @@
 """
     python: 3.5
     author: yjy
-    time: 2017-02-08
-    desc: 整理有效的域名，找出一些自己想要的
+    time: 2017-02-20
+    desc: 整理有效的全拼域名
 """
 import os
 
-domainfilepath = os.path.join("file", "save_INDEX.txt")
-nicefilepath = os.path.join("file", "nice.txt")
+domainfilepath = os.path.join("file", "spelldomain.txt")
+nicefilepath = os.path.join("file", "spell.txt")
 
 spell1 = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'w', 'x', 'y', 'z']
 spell2 = ['a', 'e', 'h', 'i', 'o', 'u']
@@ -47,15 +47,12 @@ def collectdomain():
     """
     collect all domain and return
     """
-    index = 1
     domains = []
-    while os.path.exists(domainfilepath.replace("INDEX", str(index))):
-        domainfile = open(domainfilepath.replace("INDEX", str(index)), "r")
+    if os.path.exists(domainfilepath):
+        domainfile = open(domainfilepath, "r")
         domains.extend(domainfile.readlines())
         domainfile.close()
-        index += 1
-    else:
-        return domains
+    return domains
 
 
 def filtrate(domain):
@@ -64,9 +61,8 @@ def filtrate(domain):
     """
     if domain:
         flag = False
-        if len(domain) <= 4:
-            if spelldomain(domain):
-                savedomain(domain)
+        if countstr(domain) == 5:
+            savedomain(domain)
             # length = countstr(domain)
             # if length != 0 and length <=3:
             #     flag = True

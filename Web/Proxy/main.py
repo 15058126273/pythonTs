@@ -36,22 +36,23 @@ def tidy(check_all, fail_path, check_path):
     tidyIp.TidyIp(check_all, fail_path, check_path).start()
 
 
-def check(do_all, create_thread, url, check_path, fail_path):
+def check(do_all, create_thread, url, contain, check_path, fail_path):
     """
     代理ip检测
-    (False, 40, "http://www.langsspt.com/", 'checkIp.txt', 'failip.txt')
+    (False, 40, "http://www.langsspt.com/", '首页', 'checkIp.txt', 'failip.txt')
     :param do_all: boolean 是否要测试所有的ip（包括 之前失效的ip）
     :param create_thread: int 计划启动的线程数
     :param url: str 测试地址
+    :param contain: str 需要匹配的返回值字符串  
     :param check_path: str 测试ip文件地址
     :param fail_path: str 失效ip文件地址
     :return:
     """
-    checkIp.CheckIp(do_all, create_thread, url, check_path, fail_path).start()
+    checkIp.CheckIp(do_all, create_thread, url, contain, check_path, fail_path).start()
 
 if __name__ == "__main__":
     # capture('http://www.xicidaili.com/nt/_PAGE/', 1, 100, 'checkIp.txt', 1)
 
-    check(False, 200, "https://checkapi.aliyun.com/check/checkdomain", 'checkIp.txt', 'failip.txt')
+    check(False, 100, "https://checkapi.aliyun.com/check/checkdomain", '{\"errorCode\":213,\"errorMsg\":\"Timeout\",\"success\":\"false\"}', 'checkIp.txt', 'failip.txt')
 
-    tidy(True, 'failip.txt', 'checkIp.txt')
+    # tidy(True, 'failip.txt', 'checkIp.txt')

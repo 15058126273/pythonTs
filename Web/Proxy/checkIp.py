@@ -15,7 +15,7 @@ import requests
 
 
 class CheckIp:
-    def __init__(self, do_all, create_thread, url, check_path, fail_path):
+    def __init__(self, do_all, create_thread, url, contain, check_path, fail_path):
         # 客户端信息
         self.user_agent = 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 \
                         (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36'
@@ -25,6 +25,8 @@ class CheckIp:
         self.createThread = create_thread
         # 测试地址
         self.url = url
+        # 匹配字符串
+        self.contain = contain
         # 测试ip文件地址
         self.check_path = check_path
         # 失效ip文件地址
@@ -84,7 +86,7 @@ class CheckIp:
                 response = opener.open(self.url)
                 if response.status == 200:
                     data = response.read().decode()
-                    if data == "{\"errorCode\":213,\"errorMsg\":\"Timeout\",\"success\":\"false\"}":
+                    if self.contain in data:
                         msg = "成功"
                         self._successIp.append(ip2)
                         check_file.seek(0, 2)
