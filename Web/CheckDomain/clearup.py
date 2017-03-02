@@ -47,7 +47,7 @@ def collectdomain():
     """
     collect all domain and return
     """
-    index = 1
+    index = 11
     domains = []
     while os.path.exists(domainfilepath.replace("INDEX", str(index))):
         domainfile = open(domainfilepath.replace("INDEX", str(index)), "r")
@@ -64,13 +64,15 @@ def filtrate(domain):
     """
     if domain:
         flag = False
-        if len(domain) <= 4:
-            if spelldomain(domain):
+        if len(domain) <= 6:
+            # if spelldomain(domain):
+            #     savedomain(domain)
+            length = countstr(domain)
+            if length != 0 and length <=2:
+                flag = True
+            if flag:
                 savedomain(domain)
-            # length = countstr(domain)
-            # if length != 0 and length <=3:
-            #     flag = True
-            # if flag:
+            # if specifydomain1(domain):
             #     savedomain(domain)
         else:
             pass
@@ -81,6 +83,17 @@ def savedomain(domain):
     nicefile.seek(0, 2)
     nicefile.write(domain + ".com\n")
     nicefile.close()
+
+
+def specifydomain1(domain):
+    """
+    检测是否属于指定类型域名 - abc abd
+    """
+    if len(domain) == 6:
+        if domain[0:2] == domain[3:5]:
+            # print(domain[0:1], ":", domain[3:4])
+            return True
+    return False
 
 
 def spelldomain(domain):

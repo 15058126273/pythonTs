@@ -22,7 +22,7 @@ token = commonVariable.token
 # 请求头headers
 openheaders = commonVariable.openheaders
 # 组装域名用到的字符集合
-chartuple = commonVariable.charnumtuple
+chartuple = commonVariable.chartuple2
 # 指定保存的文件名与地址
 domainfilepath = os.path.join('file', 'save_INDEX.txt')
 # 保存文件的序号 初始序号0
@@ -34,7 +34,7 @@ predictedfilepath = os.path.join('file', 'predicted.txt')
 # 遍历进度的保存地址
 usedfilepath = os.path.join('file', 'current.txt')
 # 遍历进度
-currentdigroup = [0, 0, 0, 0, 0]
+currentdigroup = [0]
 # 线程池
 threads = []
 # 代理ip文件地址

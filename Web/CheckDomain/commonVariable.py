@@ -3,7 +3,7 @@
 """
 
 checkapi = "https://checkapi.aliyun.com/check/checkdomain"
-token = "check-web-hichina-com:m7d8nh2fwyv98wfxqy6e7jiutrq4dm18"
+token = "check-web-hichina-com:sql6ho3wwe10o1i1tialuqbk7goso25a"
 headers = {
     'cookie': 'cna=PJo8D0/MI0ACAX17Z0t8aWd1',
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) \
@@ -14,6 +14,11 @@ chartuple = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
              'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
              'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
              'u', 'v', 'w', 'x', 'y', 'z')
+
+chartuple2 = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+             'a', 'b', 'c', 'd', 'e', 'h', 'i',
+             'l', 'n', 'o', 'p', 'q', 'r', 's', 't',
+             'u', 'v', 'x', 'y', 'z')
 
 charnumtuple = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
 
