@@ -51,8 +51,8 @@ def check(do_all, create_thread, url, contain, check_path, fail_path):
     checkIp.CheckIp(do_all, create_thread, url, contain, check_path, fail_path).start()
 
 if __name__ == "__main__":
-    capture('http://www.xicidaili.com/nt/_PAGE/', 1, 100, 'checkIp.txt', 1)
+    capture('http://www.66ip.cn/_PAGE.html', 1, 50, 'checkIp.txt', 1)
 
-    check(False, 200, "https://checkapi.aliyun.com/check/checkdomain", '{\"errorCode\":213,\"errorMsg\":\"Timeout\",\"success\":\"false\"}', 'checkIp.txt', 'failip.txt')
+    check(False, 200, "http://loltop.online/index.php", '英雄联盟', 'checkIp.txt', 'failip.txt')
 
-    tidy(True, 'failip.txt', 'checkIp.txt')
+    tidy(False, 'failip.txt', 'checkIp.txt')
