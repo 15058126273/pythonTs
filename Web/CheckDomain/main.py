@@ -3,7 +3,7 @@
     python: 3.5
     author: yjy
     time: 2017-02-06
-    desc: 遍历域名 查找 未注册的较短域名
+    desc: 遍历域名 查找 未注册的较短域名（效率低，易被屏蔽，改用 main_proxy.py）
 """
 import requests
 import json
@@ -12,17 +12,26 @@ import os
 import commonVariable
 from os.path import join, exists
 
+# 域名验证接口地址
 checkapi = commonVariable.checkapi
+# 接口提交必要参数
 token = commonVariable.token
+# headers
 headers = commonVariable.headers
+# 域名组成字符
 chartuple = commonVariable.chartuple
 
+# 未注册域名保存文件
 domainfile = join('file','save.txt')
+# 即将释放域名保存文件
 predictedfile = join('file', 'predicted.txt')
+# 当前域名检测进度保存
 usedfile = join('file', 'current.txt')
 
-currentdigroup = [0, 0, 0, 0]
+# 初始域名
+currentdigroup = [0]
 
+# 检测域名的状态
 def check(domain):
     try:
         url = checkapi + "?domain=" + domain + "&token=" + token + "&_" + str(time.time())
@@ -63,7 +72,7 @@ def check(domain):
     except Exception as e:
         print("出错了", e)
 
-
+# 主函数
 def main():
     global currentdigroup
     if os.path.exists(usedfile):
